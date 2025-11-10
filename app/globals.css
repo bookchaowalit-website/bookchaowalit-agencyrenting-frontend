@@ -1,0 +1,366 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        /* Minimal Black & White Color Palette */
+        --background: 0 0% 100%;
+        --foreground: 0 0% 3.9%;
+
+        --card: 0 0% 100%;
+        --card-foreground: 0 0% 3.9%;
+
+        --popover: 0 0% 100%;
+        --popover-foreground: 0 0% 3.9%;
+
+        --primary: 0 0% 9%;
+        --primary-foreground: 0 0% 98%;
+
+        --secondary: 0 0% 96.1%;
+        --secondary-foreground: 0 0% 9%;
+
+        --muted: 0 0% 96.1%;
+        --muted-foreground: 0 0% 45.1%;
+
+        --accent: 0 0% 96.1%;
+        --accent-foreground: 0 0% 9%;
+
+        --destructive: 0 84.2% 60.2%;
+        --destructive-foreground: 0 0% 98%;
+
+        --border: 0 0% 89.8%;
+        --input: 0 0% 89.8%;
+        --ring: 0 0% 3.9%;
+
+        --radius: 0.5rem;
+
+        /* Custom minimal colors */
+        --gray-50: 0 0% 98%;
+        --gray-100: 0 0% 96.1%;
+        --gray-200: 0 0% 89.8%;
+        --gray-300: 0 0% 83.1%;
+        --gray-400: 0 0% 63.9%;
+        --gray-500: 0 0% 45.1%;
+        --gray-600: 0 0% 32.2%;
+        --gray-700: 0 0% 25.1%;
+        --gray-800: 0 0% 14.9%;
+        --gray-900: 0 0% 9%;
+        --gray-950: 0 0% 3.9%;
+    }
+
+    .dark {
+        --background: 0 0% 3.9%;
+        --foreground: 0 0% 98%;
+
+        --card: 0 0% 3.9%;
+        --card-foreground: 0 0% 98%;
+
+        --popover: 0 0% 3.9%;
+        --popover-foreground: 0 0% 98%;
+
+        --primary: 0 0% 98%;
+        --primary-foreground: 0 0% 9%;
+
+        --secondary: 0 0% 14.9%;
+        --secondary-foreground: 0 0% 98%;
+
+        --muted: 0 0% 14.9%;
+        --muted-foreground: 0 0% 63.9%;
+
+        --accent: 0 0% 14.9%;
+        --accent-foreground: 0 0% 98%;
+
+        --destructive: 0 62.8% 30.6%;
+        --destructive-foreground: 0 0% 98%;
+
+        --border: 0 0% 14.9%;
+        --input: 0 0% 14.9%;
+        --ring: 0 0% 83.1%;
+    }
+}
+
+@layer base {
+    * {
+        @apply border-border;
+    }
+
+    body {
+        @apply bg-background text-foreground font-sans;
+        font-feature-settings:
+            "rlig" 1,
+            "calt" 1;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        @apply font-semibold tracking-tight;
+    }
+
+    h1 {
+        @apply text-4xl md:text-5xl lg:text-6xl;
+    }
+
+    h2 {
+        @apply text-3xl md:text-4xl;
+    }
+
+    h3 {
+        @apply text-2xl md:text-3xl;
+    }
+
+    h4 {
+        @apply text-xl md:text-2xl;
+    }
+
+    p {
+        @apply leading-7;
+    }
+
+    /* Minimal scrollbar */
+    ::-webkit-scrollbar {
+        @apply w-2;
+    }
+
+    ::-webkit-scrollbar-track {
+        @apply bg-transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        @apply bg-gray-300 rounded-full;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        @apply bg-gray-400;
+    }
+
+    .dark ::-webkit-scrollbar-thumb {
+        @apply bg-gray-700;
+    }
+
+    .dark ::-webkit-scrollbar-thumb:hover {
+        @apply bg-gray-600;
+    }
+}
+
+@layer components {
+    /* Minimal component styles */
+    .minimal-gradient {
+        background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
+    }
+
+    .dark .minimal-gradient {
+        background: linear-gradient(135deg, #171717 0%, #262626 100%);
+    }
+
+    .minimal-shadow {
+        box-shadow:
+            0 1px 3px 0 rgba(0, 0, 0, 0.1),
+            0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    }
+
+    .minimal-shadow-lg {
+        box-shadow:
+            0 10px 15px -3px rgba(0, 0, 0, 0.1),
+            0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+
+    .minimal-border {
+        @apply border border-gray-200;
+    }
+
+    .dark .minimal-border {
+        @apply border-gray-800;
+    }
+
+    /* Glass effect for modern minimal look */
+    .glass-effect {
+        backdrop-filter: blur(10px);
+        background: rgba(255, 255, 255, 0.8);
+    }
+
+    .dark .glass-effect {
+        background: rgba(0, 0, 0, 0.8);
+    }
+
+    /* Minimal hover effects */
+    .minimal-hover {
+        @apply transition-all duration-200 ease-in-out;
+    }
+
+    .minimal-hover:hover {
+        @apply transform -translate-y-1 shadow-lg;
+    }
+
+    /* Text selection styling */
+    ::selection {
+        @apply bg-gray-900 text-white;
+    }
+
+    .dark ::selection {
+        @apply bg-white text-gray-900;
+    }
+
+    /* Focus styles */
+    .minimal-focus {
+        @apply focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-opacity-50;
+    }
+
+    .dark .minimal-focus {
+        @apply focus:ring-white focus:ring-opacity-50;
+    }
+
+    /* Minimal button reset */
+    .btn-reset {
+        @apply border-none bg-transparent p-0 m-0 cursor-pointer;
+    }
+
+    /* Minimal link styles */
+    .minimal-link {
+        @apply text-gray-900 hover:text-gray-600 transition-colors duration-200;
+    }
+
+    .dark .minimal-link {
+        @apply text-white hover:text-gray-300;
+    }
+
+    /* Loading animation */
+    .loading-dots {
+        @apply inline-flex space-x-1;
+    }
+
+    .loading-dots span {
+        @apply w-2 h-2 bg-current rounded-full animate-pulse;
+        animation-delay: calc(var(--delay, 0) * 200ms);
+    }
+
+    /* Minimal card hover effect */
+    .card-minimal {
+        @apply bg-white border border-gray-100 rounded-lg transition-all duration-300 hover:shadow-lg hover:border-gray-200;
+    }
+
+    .dark .card-minimal {
+        @apply bg-gray-950 border-gray-800 hover:border-gray-700;
+    }
+
+    /* Gradient text */
+    .gradient-text {
+        @apply bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent;
+    }
+
+    .dark .gradient-text {
+        @apply from-white to-gray-300;
+    }
+}
+
+@layer utilities {
+    /* Text utilities */
+    .text-balance {
+        text-wrap: balance;
+    }
+
+    /* Layout utilities */
+    .container-minimal {
+        @apply mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl;
+    }
+
+    /* Animation utilities */
+    .animate-fade-in {
+        animation: fade-in 0.3s ease-out forwards;
+    }
+
+    .animate-slide-up {
+        animation: slide-in-from-bottom 0.3s ease-out forwards;
+    }
+
+    .animate-slide-down {
+        animation: slide-in-from-top 0.3s ease-out forwards;
+    }
+
+    /* Spacing utilities for minimal design */
+    .space-minimal {
+        @apply space-y-8 md:space-y-12 lg:space-y-16;
+    }
+
+    /* Typography scale for minimal design */
+    .text-minimal-xs {
+        @apply text-xs leading-4;
+    }
+
+    .text-minimal-sm {
+        @apply text-sm leading-5;
+    }
+
+    .text-minimal-base {
+        @apply text-base leading-6;
+    }
+
+    .text-minimal-lg {
+        @apply text-lg leading-7;
+    }
+
+    .text-minimal-xl {
+        @apply text-xl leading-8;
+    }
+
+    /* Minimal padding system */
+    .p-minimal-xs {
+        @apply p-2;
+    }
+
+    .p-minimal-sm {
+        @apply p-4;
+    }
+
+    .p-minimal-md {
+        @apply p-6;
+    }
+
+    .p-minimal-lg {
+        @apply p-8;
+    }
+
+    .p-minimal-xl {
+        @apply p-12;
+    }
+
+    /* Border radius for minimal design */
+    .rounded-minimal {
+        @apply rounded-lg;
+    }
+
+    .rounded-minimal-sm {
+        @apply rounded-md;
+    }
+
+    .rounded-minimal-lg {
+        @apply rounded-xl;
+    }
+}
+
+/* Print styles */
+@media print {
+    * {
+        @apply text-black bg-white;
+    }
+
+    .no-print {
+        @apply hidden;
+    }
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
