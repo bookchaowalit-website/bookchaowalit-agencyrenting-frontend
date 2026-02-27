@@ -71,3 +71,5 @@ export default function RootLayout({
     </html>
   );
 }
+
+// SEO TODO: Add Open Graph tags for social sharing
