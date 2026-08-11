@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import React from "react";
 import { Inter } from "next/font/google";
 import "./globals.css";
@@ -7,7 +7,14 @@ import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const inter = Inter({ subsets: ["latin"] });
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+};
+
 export const metadata: Metadata = {
+  metadataBase: new URL("https://bookchaowalit-agencyrenting.vercel.app"),
   title: {
     default: "Agency Renting",
     template: "%s | Agency Renting",
@@ -50,11 +57,6 @@ export const metadata: Metadata = {
     description:
       "Find your perfect property in Thailand. Luxury condominiums and houses in prime locations.",
     creator: "@agencyrenting",
-  },
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 1,
   },
 };
 
@@ -124,5 +126,3 @@ export default function RootLayout({
     </html>
   );
 }
-
-// SEO TODO: Add Open Graph tags for social sharing

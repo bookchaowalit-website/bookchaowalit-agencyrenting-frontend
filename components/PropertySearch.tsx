@@ -415,7 +415,7 @@ export default function PropertySearch({
           <div className="flex flex-wrap gap-2">
             {filters.keyword && (
               <Badge className="flex items-center gap-1 bg-gray-100 text-gray-900 hover:bg-gray-200">
-                "{filters.keyword}"
+                &quot;{filters.keyword}&quot;
                 <X
                   className="w-3 h-3 cursor-pointer"
                   onClick={() => handleFilterChange("keyword", "")}
