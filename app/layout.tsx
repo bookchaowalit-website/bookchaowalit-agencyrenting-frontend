@@ -68,6 +68,15 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.className} antialiased`}>
+        {/* impeccable:contract
+          THESIS: A property desk helps visitors find a fitting next address.
+          OWN-WORLD: Cracktro listing queue: emissive void, dust fields, amber signal, no enclosing cards.
+          STORY: Scan the signal, narrow the sample inventory, then hand off to a human.
+          FIRST VIEWPORT: The address thesis and first listing rows are visible immediately.
+          FORM: Baseline-led queue with image strips and depth through brightness, never card containers.
+          FINISH: Product-specific bilingual copy, legible facts, reduced-motion drift, and honest demo boundaries.
+          CONCEPT-SEED: 9a371622 / assigned candidate 5 / direction
+        */}
   {/* Structured Data for SEO */}
   <script
     type="application/ld+json"

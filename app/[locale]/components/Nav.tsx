@@ -28,6 +28,7 @@ export default function Nav({ locale }: { locale: string }) {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  if (pathname === `/${locale}`) return null;
 
   const switchLocale = locale === "en" ? "th" : "en";
   const switchPath = pathname.replace(`/${locale}`, `/${switchLocale}`);
