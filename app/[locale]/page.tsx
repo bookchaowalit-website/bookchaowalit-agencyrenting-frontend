@@ -77,7 +77,7 @@ export default function Home({ params }: { params: { locale: string } }) {
           {filtered.map((property, index) => <article className="agency-listing" key={property.id}>
             <span className="agency-index">0{index + 1}</span><div className="agency-thumb"><img src={property.images[0]} alt="" /></div>
             <div className="agency-listing-main"><div className="agency-listing-title"><h3>{property.title}</h3><span>{shortType(property.property_type)}</span></div><p className="agency-location"><MapPin size={14} /> {property.location}</p><div className="agency-specs"><span><BedDouble size={14} /> {property.bedrooms}</span><span><Bath size={14} /> {property.bathrooms}</span><span>{property.size} sqm</span></div></div>
-            <div className="agency-listing-end"><strong>{money(property, locale)}</strong><Link href={`/${locale}/listings/${property.id}`}>{t.details} <ArrowUpRight size={14} /></Link></div>
+            <div className="agency-listing-end"><strong>{money(property, locale)}</strong><Link href={`/${locale}/listings?property=${property.id}`}>{t.details} <ArrowUpRight size={14} /></Link></div>
           </article>)}
           {filtered.length === 0 ? <p className="agency-empty">No matching sample listings. Try a wider signal.</p> : null}
         </div>
