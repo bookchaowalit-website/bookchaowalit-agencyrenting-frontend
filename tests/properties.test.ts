@@ -64,3 +64,27 @@ describe("sortProperties", () => {
     assert.deepEqual(sampleProperties, copy);
   });
 });
+
+describe("listing display helpers", () => {
+  it("shows the Bangkok calendar day regardless of the visitor's time zone", async () => {
+    const previous = process.env.TZ;
+    process.env.TZ = "America/Los_Angeles";
+    try {
+      const { formatListingDate } = await import("../lib/utils.ts");
+      assert.equal(formatListingDate("2024-01-15T00:00:00Z"), "15/01/2024");
+      assert.equal(formatListingDate("2024-01-31"), "31/01/2024");
+      assert.equal(formatListingDate("not a date"), "not a date");
+      assert.equal(formatListingDate(""), "");
+    } finally {
+      process.env.TZ = previous;
+    }
+  });
+
+  it("groups digits without touching decimals or printing exponents", async () => {
+    const { groupDigits } = await import("../lib/utils.ts");
+    assert.equal(groupDigits(15000000), "15,000,000");
+    assert.equal(groupDigits(1234.5678), "1,234.57");
+    assert.equal(groupDigits(1e21), "1,000,000,000,000,000,000,000");
+    assert.equal(groupDigits(Number.NaN), "—");
+  });
+});

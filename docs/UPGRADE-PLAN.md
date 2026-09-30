@@ -8,6 +8,14 @@ unit-tested, the contact form is honest, and CI runs lint/types/tests/build.
 ## Backlog
 
 ### P0
+- `content/articles/bangkok-real-estate-guide.mdx` is a pasted generator dump:
+  it starts with `<file_path>`/`<edit_description>` tags (so gray-matter finds
+  no front matter and the API returns `title: undefined`) and contains two more
+  articles plus source-code files. Split it into the three intended `.mdx`
+  files (lines 8-219, 227-415, 423-711) and drop the code dump. Not done in
+  pass 3 (content rewrite needs owner sign-off).
+- The articles page reads `publishedAt`/`featured`/`id`, but `/api/articles`
+  returns `date` and no `featured`/`id`; align the shape.
 - Plan the Next 14 -> 16 / React 19 upgrade: `npm audit` still reports
   advisories that only Next 16 fixes (major bump, not done in this pass).
 
@@ -44,3 +52,19 @@ unit-tested, the contact form is honest, and CI runs lint/types/tests/build.
 - `PropertyCard` no longer falls back to the non-existent `/api/placeholder/…`
   route (a guaranteed broken image); listings without photos show a labelled
   "No photo yet" block.
+
+## Done in this pass (pass 3)
+- Edge-case pass on `lib/` logic:
+  - Listing dates rendered with local `getDate()` on a UTC-midnight
+    `created_at`, so visitors west of UTC saw the previous day. New
+    `formatListingDate` formats on the Asia/Bangkok calendar.
+  - Digit grouping used a regex over `toString()`, which inserted commas into
+    decimals (`1234.5678` -> `1,234.5,678`) and printed `1e+21`. New
+    `groupDigits` uses `Intl.NumberFormat`; NaN/Infinity render as an em dash.
+  - Article read time split on whitespace, so Thai (no spaces between words)
+    was counted as a handful of words; now counted with `Intl.Segmenter`.
+  - Article excerpt cut by UTF-16 code units (could split emoji / Thai marks),
+    always appended `...`, and left lone CR / U+2028 in place; now grapheme
+    safe, ellipsis only when truncated, all line breaks flattened.
+  - `tests/articles.test.ts` plus display-helper tests in
+    `tests/properties.test.ts`; `tsconfig` adds `es2022.intl` types.

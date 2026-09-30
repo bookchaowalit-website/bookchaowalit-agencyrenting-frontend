@@ -18,6 +18,37 @@ export interface Article extends ArticleMetadata {
     readTime: string;
 }
 
+const WORDS_PER_MINUTE = 200;
+
+/**
+ * Count words with Intl.Segmenter so Thai (written without spaces between
+ * words) is counted per word rather than per space-separated phrase, and so
+ * leading/trailing whitespace does not add phantom words.
+ */
+export function countWords(text: string): number {
+    const segmenter = new Intl.Segmenter('th', { granularity: 'word' });
+    return Array.from(segmenter.segment(text)).filter((segment) => segment.isWordLike).length;
+}
+
+/** Whole minutes to read, never less than one. */
+export function readingMinutes(content: string): number {
+    return Math.max(1, Math.ceil(countWords(content) / WORDS_PER_MINUTE));
+}
+
+/**
+ * First `max` user-perceived characters with all line breaks (CRLF, lone CR,
+ * U+2028/U+2029) collapsed to spaces. Cuts on grapheme boundaries so emoji and
+ * Thai combining marks are never split, and only adds an ellipsis when text
+ * was actually cut.
+ */
+export function makeExcerpt(content: string, max = 150): string {
+    const flat = content.replace(/\s+/g, ' ').trim();
+    const segmenter = new Intl.Segmenter(undefined, { granularity: 'grapheme' });
+    const graphemes = Array.from(segmenter.segment(flat), (segment) => segment.segment);
+    if (graphemes.length <= max) return flat;
+    return graphemes.slice(0, max).join('').trimEnd() + '...';
+}
+
 const articlesDirectory = path.join(process.cwd(), 'content', 'articles');
 
 export function getAllArticles(): Article[] {
@@ -30,12 +61,8 @@ export function getAllArticles(): Article[] {
         const fileContents = fs.readFileSync(fullPath, 'utf8');
         const { data, content } = matter(fileContents);
 
-        // Calculate read time (roughly 200 words per minute)
-        const wordCount = content.split(/\s+/).length;
-        const readTime = Math.ceil(wordCount / 200).toString();
-
-        // Generate excerpt from content (first 150 characters)
-        const excerpt = content.substring(0, 150).replace(/\n/g, ' ').trim() + '...';
+        const readTime = readingMinutes(content).toString();
+        const excerpt = makeExcerpt(content);
 
         return {
             slug,
@@ -61,9 +88,8 @@ export function getArticleBySlug(slug: string): Article | null {
         const fileContents = fs.readFileSync(fullPath, 'utf8');
         const { data, content } = matter(fileContents);
 
-        const wordCount = content.split(/\s+/).length;
-        const readTime = Math.ceil(wordCount / 200).toString();
-        const excerpt = content.substring(0, 150).replace(/\n/g, ' ').trim() + '...';
+        const readTime = readingMinutes(content).toString();
+        const excerpt = makeExcerpt(content);
 
         return {
             slug,
