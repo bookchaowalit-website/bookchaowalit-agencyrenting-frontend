@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, use } from "react";
 import { notFound } from "next/navigation";
 import PropertySearch from "@/components/PropertySearch";
 import PropertyCard from "@/components/PropertyCard";
@@ -47,7 +47,8 @@ interface PropertyFilters {
     saleType: string;
 }
 
-export default function Listings({ params }: { params: { locale: string } }) {
+export default function Listings(props: { params: Promise<{ locale: string }> }) {
+    const params = use(props.params);
     const { locale } = params;
     const messages = messageMap[locale];
 

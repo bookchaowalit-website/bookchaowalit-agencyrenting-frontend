@@ -16,8 +16,6 @@ unit-tested, the contact form is honest, and CI runs lint/types/tests/build.
   pass 3 (content rewrite needs owner sign-off).
 - The articles page reads `publishedAt`/`featured`/`id`, but `/api/articles`
   returns `date` and no `featured`/`id`; align the shape.
-- Plan the Next 14 -> 16 / React 19 upgrade: `npm audit` still reports
-  advisories that only Next 16 fixes (major bump, not done in this pass).
 
 ### P1
 - Replace the 5 remote `<img>` tags with `next/image` + `images.remotePatterns`.
@@ -26,6 +24,8 @@ unit-tested, the contact form is honest, and CI runs lint/types/tests/build.
 - Wire the contact form to a real handoff (e.g. a form service) once one is
   chosen; keep the honest demo state until then.
 - Confirm canonical domain; set `NEXT_PUBLIC_SITE_URL`.
+- Next 16 upgrade (optional; 15.5.x is patched): migrate `next lint`
+  (deprecated in 15.5) to the ESLint CLI with a flat config first.
 
 ### P2
 - Move translations into `messages/*.json` consistently (the pages embed
@@ -68,3 +68,4 @@ unit-tested, the contact form is honest, and CI runs lint/types/tests/build.
     safe, ellipsis only when truncated, all line breaks flattened.
   - `tests/articles.test.ts` plus display-helper tests in
     `tests/properties.test.ts`; `tsconfig` adds `es2022.intl` types.
+- Security deps: `next` 14.2.35 -> 15.5.27 (no patched 14.x exists for critical GHSA-2xp9-vwfh-vxw4 / GHSA-p293-qw3h-jr36) with React 19, `eslint-config-next` 15.5.27, `lucide-react` ^0.577 (first line with a React 19 peer), `@next/codemod` `next-async-request-api` for the async `params` in `app/[locale]`, and a `postcss` ^8.5.28 override (Next 15 pins 8.4.31). `npm audit --omit=dev`: C1/H4/M0/L1 -> C0/H0/M0/L0 (full audit also 0).

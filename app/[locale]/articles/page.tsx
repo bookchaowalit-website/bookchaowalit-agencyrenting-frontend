@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, use } from "react";
 import { notFound } from "next/navigation";
 import {
     Card,
@@ -34,12 +34,13 @@ interface ArticleItem {
 }
 
 interface ArticlesPageProps {
-    params: {
+    params: Promise<{
         locale: string;
-    };
+    }>;
 }
 
-export default function ArticlesPage({ params }: ArticlesPageProps) {
+export default function ArticlesPage(props: ArticlesPageProps) {
+    const params = use(props.params);
     const [articles, setArticles] = useState<ArticleItem[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);

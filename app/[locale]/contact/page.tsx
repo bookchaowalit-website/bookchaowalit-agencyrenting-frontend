@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, use } from "react";
 import { notFound } from "next/navigation";
 import {
     Card,
@@ -54,7 +54,8 @@ interface ContactFormData {
     message: string;
 }
 
-export default function Contact({ params }: { params: { locale: string } }) {
+export default function Contact(props: { params: Promise<{ locale: string }> }) {
+    const params = use(props.params);
     const { locale } = params;
     const messages = messageMap[locale];
 

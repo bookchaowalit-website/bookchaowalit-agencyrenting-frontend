@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { use } from "react";
 import { notFound } from "next/navigation";
 import {
   Card,
@@ -36,7 +36,8 @@ const messageMap: Record<string, any> = {
   th: thMessages,
 };
 
-export default function About({ params }: { params: { locale: string } }) {
+export default function About(props: { params: Promise<{ locale: string }> }) {
+  const params = use(props.params);
   const { locale } = params;
   const messages = messageMap[locale];
 

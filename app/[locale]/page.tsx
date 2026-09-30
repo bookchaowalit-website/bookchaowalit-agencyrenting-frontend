@@ -2,7 +2,7 @@
 
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo, useState, use } from "react";
 import { ArrowRight, ArrowUpRight, Bath, BedDouble, MapPin, Phone, Radio, Search } from "lucide-react";
 import { getFeaturedProperties, type Property } from "@/lib/sampleData";
 
@@ -35,7 +35,8 @@ function money(property: Property, locale: "en" | "th") {
 
 function shortType(value: string) { return value.replace(/^./, (letter) => letter.toUpperCase()); }
 
-export default function Home({ params }: { params: { locale: string } }) {
+export default function Home(props: { params: Promise<{ locale: string }> }) {
+  const params = use(props.params);
   const locale = params.locale as "en" | "th";
   if (!copy[locale]) notFound();
   const t = copy[locale];
