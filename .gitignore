@@ -135,3 +135,6 @@ ehthumbs.db
 Thumbs.db
 .vercel
 .env*
+
+# typescript
+*.tsbuildinfo

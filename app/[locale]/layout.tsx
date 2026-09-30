@@ -9,9 +9,9 @@ interface LocaleLayoutProps {
 export default function LocaleLayout({ children, params }: LocaleLayoutProps) {
   const { locale } = params;
   return (
-    <>
+    <div lang={locale === "th" ? "th" : "en"}>
       <Nav locale={locale} />
       {children}
-    </>
+    </div>
   );
 }

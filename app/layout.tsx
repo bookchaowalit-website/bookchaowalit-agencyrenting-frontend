@@ -4,17 +4,17 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
+import { SITE_URL } from "@/lib/site";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://bookchaowalit-agencyrenting.vercel.app"),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "Agency Renting",
     template: "%s | Agency Renting",
@@ -45,14 +45,14 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://agencyrenting.com",
+    url: "/",
     title: "Agency Renting - Premium Real Estate Services",
     description:
       "Find your perfect property in Thailand. Luxury condominiums and houses in prime locations.",
     siteName: "Agency Renting",
   },
   twitter: {
-    card: "summary_large_image",
+    card: "summary",
     title: "Agency Renting - Premium Real Estate Services",
     description:
       "Find your perfect property in Thailand. Luxury condominiums and houses in prime locations.",

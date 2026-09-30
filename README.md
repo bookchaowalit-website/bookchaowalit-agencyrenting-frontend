@@ -65,11 +65,11 @@ actual Next.js 14.2.35 production build, not just the dev server.
 
 ## Known limitation
 
-The contact form's submit handler is a UI simulation — it `await`s a fixed
-2-second timeout and shows a success state, but doesn't call an API route
-or send anything anywhere. Worth being upfront about if this comes up: the
-search/filter and listings are real client-side logic against real (if
-static) data; the contact flow is not wired to a backend.
+The contact form has no backend. Submitting it now says so explicitly
+("Demo form — nothing was sent", in English and Thai) and keeps the typed
+text, instead of the earlier 2-second fake send that claimed "Message Sent!
+We'll get back to you within 24 hours". The search/filter and listings are
+real client-side logic against real (if static) data.
 
 ## Stack
 
@@ -80,8 +80,14 @@ for article frontmatter.
 ## Local development
 
 ```bash
-npm install
+npm ci
 npm run dev
 npm run lint
+npm run typecheck
+npm test        # node:test unit tests for lib/sampleData.ts filtering/sorting
 npm run build
 ```
+
+CI (`.github/workflows/ci.yml`) runs the same steps. `NEXT_PUBLIC_SITE_URL`
+overrides the canonical origin used by metadata, `robots.txt`, and the
+bilingual `sitemap.xml`.
