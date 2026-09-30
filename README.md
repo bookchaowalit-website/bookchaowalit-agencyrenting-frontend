@@ -56,7 +56,11 @@ Portfolio: [bookchaowalit.com](https://bookchaowalit.com)
 - `next` bumped `14.0.0` → `^14.2.35` (in step with `eslint-config-next`),
   clearing a critical-severity Next.js vulnerability list and most others
   (13 → 5 `npm audit` findings) without any breaking change. The remaining
-  5 all require Next 14→16, not attempted here.
+  5 all require Next 14→16, not attempted here. (Superseded: now on Next
+  15.5.27 + React 19, see below.)
+- `next` 14.2.35 → 15.5.27 with React 19: Next 14 has no patched release for
+  the critical Image Optimization RCE (GHSA-2xp9-vwfh-vxw4). `npm audit`
+  reports 0 findings.
 
 Verified live end-to-end after every fix: the `/` → `/en` redirect, all
 five locale routes, an invalid locale (`/xx`) correctly 404ing, and both
@@ -73,8 +77,8 @@ real client-side logic against real (if static) data.
 
 ## Stack
 
-Next.js 14 (App Router, path-based `[locale]` i18n, no i18n library) ·
-React 18 · TypeScript · Tailwind CSS · Radix UI primitives · `gray-matter`
+Next.js 15 (App Router, path-based `[locale]` i18n, no i18n library) ·
+React 19 · TypeScript · Tailwind CSS · Radix UI primitives · `gray-matter`
 for article frontmatter.
 
 ## Local development
