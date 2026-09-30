@@ -170,11 +170,15 @@ export default function PropertyCard({
             {/* Image Section */}
             <div className="relative overflow-hidden">
                 <div className="aspect-video relative">
-                    <img
-                        src={property.images[0] || "/api/placeholder/400/250"}
-                        alt={property.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
+                    {property.images[0] ? (
+                        <img
+                            src={property.images[0]}
+                            alt={property.title}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                    ) : (
+                        <div className="w-full h-full bg-gray-100 flex items-center justify-center text-sm text-gray-500">No photo yet</div>
+                    )}
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300" />
                 </div>
 

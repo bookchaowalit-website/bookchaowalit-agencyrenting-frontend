@@ -35,3 +35,12 @@ unit-tested, the contact form is honest, and CI runs lint/types/tests/build.
 - Open Graph url no longer points at an unrelated domain; robots.txt and a
   bilingual sitemap; data-driven, accessible `more-projects` page.
 - CI workflow; `typecheck`/`test` scripts; untracked `tsconfig.tsbuildinfo`.
+
+## Done in this pass (pass 2)
+- Cross-repo consistency: the layout's JSON-LD now uses `SITE_URL` (from
+  `NEXT_PUBLIC_SITE_URL`) instead of a hard-coded `*.vercel.app` host, and the
+  bogus `SearchAction` (pointed at `/more-projects`, which has no search) is gone.
+  Sitemap/robots were already generated from `lib/site.ts`.
+- `PropertyCard` no longer falls back to the non-existent `/api/placeholder/…`
+  route (a guaranteed broken image); listings without photos show a labelled
+  "No photo yet" block.

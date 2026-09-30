@@ -85,7 +85,7 @@ export default function RootLayout({
         '@context': 'https://schema.org',
         '@type': 'WebApplication',
         name: 'Agencyrenting',
-        url: 'https://bookchaowalit-agencyrenting.vercel.app',
+        url: SITE_URL,
         description: 'Agencyrenting by Bookchaowalit - A modern web application',
         applicationCategory: 'UtilitiesApplication',
         operatingSystem: 'Web',
@@ -115,12 +115,7 @@ export default function RootLayout({
         '@context': 'https://schema.org',
         '@type': 'WebSite',
         name: 'Agencyrenting',
-        url: 'https://bookchaowalit-agencyrenting.vercel.app',
-        potentialAction: {
-          '@type': 'SearchAction',
-          target: 'https://bookchaowalit-agencyrenting.vercel.app/more-projects',
-          'query-input': 'required name=search_term'
-        }
+        url: SITE_URL
       })
     }}
   />
