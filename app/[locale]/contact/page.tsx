@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, use } from "react";
 import { notFound } from "next/navigation";
 import {
     Card,
@@ -54,7 +54,8 @@ interface ContactFormData {
     message: string;
 }
 
-export default function Contact({ params }: { params: { locale: string } }) {
+export default function Contact(props: { params: Promise<{ locale: string }> }) {
+    const params = use(props.params);
     const { locale } = params;
     const messages = messageMap[locale];
 
@@ -111,9 +112,10 @@ export default function Contact({ params }: { params: { locale: string } }) {
             budgetPlaceholder: "Your budget range",
             sendMessage: "Send Message",
             sending: "Sending...",
-            messageSent: "Message Sent!",
+            messageSent: "Demo form — nothing was sent",
             thankYou:
-                "Thank you for contacting us. We'll get back to you within 24 hours.",
+                "This site is a portfolio demo without a backend, so your message was not delivered to anyone. Your text is still in the form if you want to copy it.",
+            backToForm: "Back to the form",
             officeLocations: "Office Locations",
             businessHours: "Business Hours",
             followUs: "Follow Us",
@@ -162,8 +164,9 @@ export default function Contact({ params }: { params: { locale: string } }) {
             budgetPlaceholder: "ช่วงงบประมาณของคุณ",
             sendMessage: "ส่งข้อความ",
             sending: "กำลังส่ง...",
-            messageSent: "ส่งข้อความแล้ว!",
-            thankYou: "ขอบคุณที่ติดต่อเรา เราจะติดต่อกลับภายใน 24 ชั่วโมง",
+            messageSent: "แบบฟอร์มสาธิต — ยังไม่ได้ส่งข้อความ",
+            thankYou: "เว็บไซต์นี้เป็นผลงานสาธิตที่ไม่มีระบบหลังบ้าน ข้อความของคุณจึงไม่ได้ถูกส่งถึงใคร ข้อความยังอยู่ในแบบฟอร์มหากต้องการคัดลอก",
+            backToForm: "กลับไปที่แบบฟอร์ม",
             officeLocations: "สำนักงาน",
             businessHours: "เวลาทำการ",
             followUs: "ติดตามเรา",
@@ -204,25 +207,10 @@ export default function Contact({ params }: { params: { locale: string } }) {
         e.preventDefault();
         setIsSubmitting(true);
 
-        // Simulate form submission
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-
+        // No backend exists for this portfolio demo: nothing is sent. Keep the
+        // visitor's text in the form and say so plainly instead of faking a send.
         setIsSubmitting(false);
         setIsSubmitted(true);
-
-        // Reset form after 3 seconds
-        setTimeout(() => {
-            setIsSubmitted(false);
-            setFormData({
-                name: "",
-                email: "",
-                phone: "",
-                subject: "",
-                propertyType: "any",
-                budget: "",
-                message: "",
-            });
-        }, 3000);
     };
 
     const agents = [
@@ -312,14 +300,21 @@ export default function Contact({ params }: { params: { locale: string } }) {
                             </CardHeader>
                             <CardContent>
                                 {isSubmitted ? (
-                                    <div className="text-center py-8">
-                                        <CheckCircle className="w-16 h-16 text-gray-900 mx-auto mb-4" />
+                                    <div className="text-center py-8" role="status">
+                                        <CheckCircle className="w-16 h-16 text-gray-900 mx-auto mb-4" aria-hidden="true" />
                                         <h3 className="text-2xl font-semibold text-gray-900 mb-2">
                                             {tLocal("messageSent")}
                                         </h3>
                                         <p className="text-gray-600">
                                             {tLocal("thankYou")}
                                         </p>
+                                        <button
+                                            type="button"
+                                            onClick={() => setIsSubmitted(false)}
+                                            className="mt-6 underline text-gray-900"
+                                        >
+                                            {tLocal("backToForm")}
+                                        </button>
                                     </div>
                                 ) : (
                                     <form

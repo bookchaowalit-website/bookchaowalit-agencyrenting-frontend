@@ -448,6 +448,17 @@ export const sampleProperties: Property[] = [
     },
 ];
 
+/** Lower-case and strip everything except letters and digits. */
+export const compactText = (value: string): string =>
+    value.toLowerCase().replace(/[^a-z0-9\u0e00-\u0e7f]+/g, "");
+
+/** Parse a numeric filter ("", "any", or a number); null means "no filter". */
+export const parseFilterNumber = (value?: string): number | null => {
+    if (!value || value === "any") return null;
+    const parsed = Number(value.replace(/[,\s]/g, ""));
+    return Number.isFinite(parsed) ? parsed : null;
+};
+
 // Utility functions for filtering and searching
 export const filterProperties = (
     properties: Property[],
@@ -465,8 +476,9 @@ export const filterProperties = (
 ): Property[] => {
     return properties.filter((property) => {
         // Keyword search
-        if (filters.keyword) {
-            const keyword = filters.keyword.toLowerCase();
+        const keywordInput = filters.keyword?.trim();
+        if (keywordInput) {
+            const keyword = keywordInput.toLowerCase();
             const searchText =
                 `${property.title} ${property.location} ${property.description}`.toLowerCase();
             if (!searchText.includes(keyword)) return false;
@@ -478,9 +490,12 @@ export const filterProperties = (
             filters.location !== "" &&
             filters.location !== "any"
         ) {
-            const locationMatch = property.location
-                .toLowerCase()
-                .includes(filters.location.toLowerCase());
+            // Filter values are slugs ("chiangmai", "koh_samui") while data
+            // uses display names ("Nimmanhaemin, Chiang Mai"); compare both
+            // with spaces/punctuation removed.
+            const locationMatch = compactText(property.location).includes(
+                compactText(filters.location),
+            );
             if (!locationMatch) return false;
         }
 
@@ -490,43 +505,22 @@ export const filterProperties = (
         }
 
         // Price range filter
-        if (
-            filters.priceMin &&
-            filters.priceMin !== "" &&
-            filters.priceMin !== "any"
-        ) {
-            if (property.price < parseInt(filters.priceMin)) return false;
-        }
-        if (
-            filters.priceMax &&
-            filters.priceMax !== "" &&
-            filters.priceMax !== "any"
-        ) {
-            if (property.price > parseInt(filters.priceMax)) return false;
-        }
+        const priceMinFilter = parseFilterNumber(filters.priceMin);
+        if (priceMinFilter !== null && property.price < priceMinFilter) return false;
+        const priceMaxFilter = parseFilterNumber(filters.priceMax);
+        if (priceMaxFilter !== null && property.price > priceMaxFilter) return false;
 
         // Bedrooms filter
-        if (
-            filters.bedrooms &&
-            filters.bedrooms !== "" &&
-            filters.bedrooms !== "any"
-        ) {
-            if (property.bedrooms < parseInt(filters.bedrooms)) return false;
-        }
+        const bedroomsFilter = parseFilterNumber(filters.bedrooms);
+        if (bedroomsFilter !== null && property.bedrooms < bedroomsFilter) return false;
 
         // Bathrooms filter
-        if (
-            filters.bathrooms &&
-            filters.bathrooms !== "" &&
-            filters.bathrooms !== "any"
-        ) {
-            if (property.bathrooms < parseInt(filters.bathrooms)) return false;
-        }
+        const bathroomsFilter = parseFilterNumber(filters.bathrooms);
+        if (bathroomsFilter !== null && property.bathrooms < bathroomsFilter) return false;
 
         // Size filter
-        if (filters.size && filters.size !== "" && filters.size !== "any") {
-            if (property.size < parseInt(filters.size)) return false;
-        }
+        const sizeFilter = parseFilterNumber(filters.size);
+        if (sizeFilter !== null && property.size < sizeFilter) return false;
 
         // Sale type filter
         if (
@@ -539,6 +533,12 @@ export const filterProperties = (
 
         return true;
     });
+};
+
+/** Listing time in ms; falls back to created_at, then 0, so sorting never sees NaN. */
+const listedTime = (property: Property): number => {
+    const time = Date.parse(property.listedDate || property.created_at || "");
+    return Number.isNaN(time) ? 0 : time;
 };
 
 // Sort properties
@@ -559,15 +559,9 @@ export const sortProperties = (
             case "price-desc":
                 return b.price - a.price;
             case "date-new":
-                return (
-                    new Date(b.listedDate || "").getTime() -
-                    new Date(a.listedDate || "").getTime()
-                );
+                return listedTime(b) - listedTime(a);
             case "date-old":
-                return (
-                    new Date(a.listedDate || "").getTime() -
-                    new Date(b.listedDate || "").getTime()
-                );
+                return listedTime(a) - listedTime(b);
             case "size-asc":
                 return a.size - b.size;
             case "size-desc":

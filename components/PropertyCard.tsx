@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { formatListingDate, groupDigits } from "@/lib/utils";
 import {
     Bed,
     Bath,
@@ -123,29 +124,14 @@ export default function PropertyCard({
 
     const formatPrice = (price: number, type: string) => {
         // Simple number formatting with commas
-        const formatted = price
-            .toString()
-            .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        const formatted = groupDigits(price);
         const suffix = type === "rent" ? t("perMonth") : "";
         return `${formatted} ${t("thb")}${suffix}`;
     };
 
-    const formatDate = (dateString: string) => {
-        if (!dateString) return "";
-        const date = new Date(dateString);
-        if (isNaN(date.getTime())) return dateString;
+    const formatDate = (dateString: string) => formatListingDate(dateString);
 
-        // Simple date formatting: DD/MM/YYYY
-        const day = date.getDate().toString().padStart(2, "0");
-        const month = (date.getMonth() + 1).toString().padStart(2, "0");
-        const year = date.getFullYear();
-        return `${day}/${month}/${year}`;
-    };
-
-    const formatNumber = (num: number) => {
-        // Simple number formatting with commas
-        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    };
+    const formatNumber = (num: number) => groupDigits(num);
 
     const handleContact = () => {
         if (onContact) {
@@ -170,11 +156,15 @@ export default function PropertyCard({
             {/* Image Section */}
             <div className="relative overflow-hidden">
                 <div className="aspect-video relative">
-                    <img
-                        src={property.images[0] || "/api/placeholder/400/250"}
-                        alt={property.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
+                    {property.images[0] ? (
+                        <img
+                            src={property.images[0]}
+                            alt={property.title}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                    ) : (
+                        <div className="w-full h-full bg-gray-100 flex items-center justify-center text-sm text-gray-500">No photo yet</div>
+                    )}
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300" />
                 </div>
 

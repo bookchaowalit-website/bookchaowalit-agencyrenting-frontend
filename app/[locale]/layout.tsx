@@ -3,15 +3,16 @@ import Nav from "./components/Nav";
 
 interface LocaleLayoutProps {
   children: React.ReactNode;
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 }
 
-export default function LocaleLayout({ children, params }: LocaleLayoutProps) {
-  const { locale } = params;
+export default async function LocaleLayout(props: LocaleLayoutProps) {
+  const { children } = props;
+  const { locale } = await props.params;
   return (
-    <>
+    <div lang={locale === "th" ? "th" : "en"}>
       <Nav locale={locale} />
       {children}
-    </>
+    </div>
   );
 }
